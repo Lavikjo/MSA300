@@ -1,8 +1,16 @@
 /**************************************************************************/
 /*!
     @file     MSA300.cpp
-    @author   Joel Lavikainen
-    @license  BSD
+    
+    @mainpage MSA300 14-bit digital accelometer library
+
+    @section author Author   
+    Joel Lavikainen
+    
+    @section license License 
+    BSD
+    
+    @section intro_sec Introduction 
     Based on Adafruit Accelerometer library code
 */
 /**************************************************************************/
@@ -20,6 +28,7 @@
 /**************************************************************************/
 /*!
     @brief  Abstract away platform differences in Arduino wire library
+    @return Byte which was read.
 */
 /**************************************************************************/
 inline uint8_t MSA300::i2cread(void) 
@@ -33,7 +42,9 @@ inline uint8_t MSA300::i2cread(void)
 
 /**************************************************************************/
 /*!
-    @brief  Abstract away platform differences in Arduino wire library
+    @brief  Abstract away platform differences in Arduino wire library.
+    @param  x
+            Byte to be written.
 */
 /**************************************************************************/
 inline void MSA300::i2cwrite(uint8_t x) 
@@ -45,40 +56,19 @@ inline void MSA300::i2cwrite(uint8_t x)
   #endif
 }
 
-/**************************************************************************/
-/*!
-    @brief Clamp float value
-*/
-/**************************************************************************/
-float clamp(float value, float min, float max)
-{
-  if(value > max) {
-    value = max;
-  } else if(value < min) {
-    value = min;
-  }
-
-  return value;
-}
 
 /**************************************************************************/
 /*!
-    @brief Clamp uint16_t value
-*/
-/**************************************************************************/
-uint16_t clamp_uint16(uint16_t value, uint16_t min, uint16_t max) {
- if(value > max) {
-    value = max;
-  } else if(value < min) {
-    value = min;
-  }
-  
-  return value;
-}
-
-/**************************************************************************/
-/*!
-    @brief  Abstract away SPI receiver & transmitter
+    @brief  Abstract away SPI receiver & transmitter.
+    @param  clock
+            Clock pin
+    @param  miso
+            MISO pin
+    @param  mosi
+            MOSI pin
+    @param  data
+            Data byte
+    @return Reply byte
 */
 /**************************************************************************/
 static uint8_t spixfer(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t data) 
@@ -97,7 +87,11 @@ static uint8_t spixfer(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t data)
 
 /**************************************************************************/
 /*!
-    @brief  Writes 8-bits to the specified destination register
+    @brief  Writes 8-bits to the specified destination register.
+    @param  reg
+            Register address
+    @param  value  
+    Byte value to be written
 */
 /**************************************************************************/
 void MSA300::writeRegister(uint8_t reg, uint8_t value) 
@@ -118,6 +112,9 @@ void MSA300::writeRegister(uint8_t reg, uint8_t value)
 /**************************************************************************/
 /*!
     @brief  Reads 8-bits from the specified register
+    @param  reg
+            Address of register
+    @return Reply byte
 */
 /**************************************************************************/
 uint8_t MSA300::readRegister(uint8_t reg) 
@@ -141,6 +138,9 @@ uint8_t MSA300::readRegister(uint8_t reg)
 /**************************************************************************/
 /*!
     @brief  Reads 16-bits from the specified register
+    @param  reg
+            Register address
+    @return 16-bits of data
 */
 /**************************************************************************/
 int16_t MSA300::read16(uint8_t reg) 
@@ -163,7 +163,8 @@ int16_t MSA300::read16(uint8_t reg)
 
 /**************************************************************************/
 /*! 
-    @brief  Read the device ID (can be used to check connection)
+    @brief  Read the part ID (can be used to check connection)
+    @return Part ID
 */
 /**************************************************************************/
 uint8_t MSA300::getPartID(void) 
@@ -175,6 +176,7 @@ uint8_t MSA300::getPartID(void)
 /**************************************************************************/
 /*! 
     @brief  Gets the most recent X axis value
+    @return X-axis acceleration data
 */
 /**************************************************************************/
 int16_t MSA300::getX(void) 
@@ -185,6 +187,7 @@ int16_t MSA300::getX(void)
 /**************************************************************************/
 /*! 
     @brief  Gets the most recent Y axis value
+    @return Y-axis acceleration data
 */
 /**************************************************************************/
 int16_t MSA300::getY(void) 
@@ -195,6 +198,7 @@ int16_t MSA300::getY(void)
 /**************************************************************************/
 /*! 
     @brief  Gets the most recent Z axis value
+    @return Z-axis acceleration data
 */
 /**************************************************************************/
 int16_t MSA300::getZ(void) 
@@ -205,6 +209,8 @@ int16_t MSA300::getZ(void)
 /**************************************************************************/
 /*!
     @brief  Instantiates a new MSA300 class
+    @param  sensorID
+            ID for identifying different sensors
 */
 /**************************************************************************/
 MSA300::MSA300(int32_t sensorID)
@@ -217,6 +223,16 @@ MSA300::MSA300(int32_t sensorID)
 /**************************************************************************/
 /*!
     @brief  Instantiates a new MSA300 class in SPI mode
+    @param  clock
+            Clock pin
+    @param  miso
+            MISO pin
+    @param  mosi
+            MOSI pin
+    @param  cs
+            Chip select pin
+    @param  sensorID
+            ID for identifying different sensors
 */
 /**************************************************************************/
 MSA300::MSA300(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t cs, int32_t sensorID) 
@@ -234,6 +250,8 @@ MSA300::MSA300(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t cs, int32_t se
 /**************************************************************************/
 /*!
     @brief  Setups the HW (reads coefficients values, etc.)
+    @return True if connection was established, False if no MSA300 was
+            detected
 */
 /**************************************************************************/
 bool MSA300::begin() 
@@ -268,6 +286,8 @@ bool MSA300::begin()
 /**************************************************************************/
 /*!
     @brief  Sets the g range for the accelerometer
+    @param  range
+            Measurement range
 */
 /**************************************************************************/
 void MSA300::setRange(range_t range)
@@ -304,7 +324,8 @@ void MSA300::setRange(range_t range)
 
 /**************************************************************************/
 /*!
-    @brief Get the g range for the accelerometer
+    @brief   Get the g range for the accelerometer
+    @return  Measurement range
 */
 /**************************************************************************/
 range_t MSA300::getRange(void)
@@ -315,6 +336,8 @@ range_t MSA300::getRange(void)
 /**************************************************************************/
 /*!
     @brief  Sets the resolution for the accelerometer
+    @param  resolution
+            Measurement resolution
 */
 /**************************************************************************/
 void MSA300::setResolution(res_t resolution)
@@ -337,6 +360,7 @@ void MSA300::setResolution(res_t resolution)
 /**************************************************************************/
 /*!
     @brief  Get resolution for the accelerometer
+    @return Measurement resolution
 */
 /**************************************************************************/
 res_t MSA300::getResolution(void)
@@ -348,6 +372,8 @@ res_t MSA300::getResolution(void)
 /**************************************************************************/
 /*!
     @brief  Sets the data rate for the MSA300 (controls power consumption)
+    @param  dataRate
+            Output data rate
 */
 /**************************************************************************/
 void MSA300::setDataRate(dataRate_t dataRate)
@@ -360,6 +386,7 @@ void MSA300::setDataRate(dataRate_t dataRate)
 /**************************************************************************/
 /*!
     @brief Get the data rate for the MSA300
+    @return Output data rate
 */
 /**************************************************************************/
 dataRate_t MSA300::getDataRate(void)
@@ -370,6 +397,8 @@ dataRate_t MSA300::getDataRate(void)
 /**************************************************************************/
 /*!
     @brief  Sets the operating mode for MSA300
+    @param  mode
+            Power mode
 */
 /**************************************************************************/
 void MSA300::setMode(pwrMode_t mode) 
@@ -391,7 +420,8 @@ void MSA300::setMode(pwrMode_t mode)
 
 /**************************************************************************/
 /*!
-    @brief  Gets the data rate for the MSA300 
+    @brief  Gets the data rate for the MSA300
+    @return Power mode
 */
 /**************************************************************************/
 pwrMode_t MSA300::getMode(void)
@@ -434,6 +464,7 @@ void MSA300::clearInterrupts(void)
 /*!
     @brief  Check interrupt registers for all occured interrupts. Return
             struct with booleans of all triggered interrupts.
+    @return Struct containing boolean status of interrupts.
 */
 /**************************************************************************/
 interrupt_t MSA300::checkInterrupts(void)
@@ -467,6 +498,8 @@ interrupt_t MSA300::checkInterrupts(void)
 /**************************************************************************/
 /*!
     @brief  Set interrupt latching mode
+    @param  mode
+            Interrupt mode
 */
 /**************************************************************************/
 void MSA300::setInterruptLatch(intMode_t mode)
@@ -484,8 +517,12 @@ void MSA300::setInterruptLatch(intMode_t mode)
 
 /**************************************************************************/
 /*!
-    @brief Turn on active interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Turn on active interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  axis
+            Axis to set active interrupt on
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableActiveInterrupt(axis_t axis, uint8_t interrupt) 
@@ -522,8 +559,10 @@ void MSA300::enableActiveInterrupt(axis_t axis, uint8_t interrupt)
 
 /**************************************************************************/
 /*!
-    @brief Toggle freefall interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Toggle freefall interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableFreefallInterrupt(uint8_t interrupt)
@@ -550,8 +589,10 @@ void MSA300::enableFreefallInterrupt(uint8_t interrupt)
 
 /**************************************************************************/
 /*!
-    @brief Enable freefall interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Enable freefall interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableOrientationInterrupt(uint8_t interrupt)
@@ -578,8 +619,10 @@ void MSA300::enableOrientationInterrupt(uint8_t interrupt)
 
 /**************************************************************************/
 /*!
-    @brief Enable single tap interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Enable single tap interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableSingleTapInterrupt(uint8_t interrupt)
@@ -606,8 +649,10 @@ void MSA300::enableSingleTapInterrupt(uint8_t interrupt)
 
 /**************************************************************************/
 /*!
-    @brief Enable double tap interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Enable double tap interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableDoubleTapInterrupt(uint8_t interrupt)
@@ -634,8 +679,10 @@ void MSA300::enableDoubleTapInterrupt(uint8_t interrupt)
 
 /**************************************************************************/
 /*!
-    @brief Enable new data interrupt. Interrupt parameter corresponds to
-           interrupt pins.
+    @brief  Enable new data interrupt. Interrupt parameter corresponds to
+            interrupt pins.
+    @param  interrupt
+            Index of interrupt (1 or 2)
 */
 /**************************************************************************/
 void MSA300::enableNewDataInterrupt(uint8_t interrupt)
@@ -663,9 +710,10 @@ void MSA300::enableNewDataInterrupt(uint8_t interrupt)
 /**************************************************************************/
 /*!
     @brief Check orientation of the chip.
+    @return Orientation struct containing z and xy-orientations
 */
 /**************************************************************************/
-orient_t checkOrientation(void)
+orient_t MSA300::checkOrientation(void)
 {
   orient_t orientation;
   uint8_t reg = readRegister(MSA300_REG_ORIENT_STATUS);
@@ -681,13 +729,17 @@ orient_t checkOrientation(void)
     @brief  Set offset compensation value for specific axis. Value can vary
             from 0 to 998.4 mg. 
             Values outside the range will be clamped.
+    @param  axis
+            Axis to set offset on
+    @param  value
+            Offset value (0 to 998.4 mg)
 */
 /**************************************************************************/
 void MSA300::setOffset(axis_t axis, float value)
 {
   float offset = value / 3.9f;
 
-  offset = clamp(offset, 0, 998.4f);
+  offset = clamp<float>(offset, 0, 998.4f);
 
   switch(axis) {
     case MSA300_AXIS_X:
@@ -724,6 +776,8 @@ void MSA300::setOffset(axis_t axis, float value)
 /*!
     @brief  Set threshold of tap interrupt. Value can vary from 0 to full
             scale of each range. Values outside the range will be clamped.
+    @param  value
+            Tap threshold value (0 to full scale)
 */
 /**************************************************************************/
 void MSA300::setTapThreshold(float value)
@@ -731,19 +785,19 @@ void MSA300::setTapThreshold(float value)
   float offset;
   switch(_range) {
     case MSA300_RANGE_16_G:
-    offset = clamp(value / MSA300_MG2G_TAP_TH_16_G, 0, 16000f);
+    offset = clamp<float>(value / MSA300_MG2G_TAP_TH_16_G, 0, 16000f);
     
     break;
     case MSA300_RANGE_8_G:
-    offset = clamp(value / MSA300_MG2G_TAP_TH_8_G, 0, 8000f);
+    offset = clamp<float>(value / MSA300_MG2G_TAP_TH_8_G, 0, 8000f);
 
     break;
     case MSA300_RANGE_4_G:
-    offset = clamp(value / MSA300_MG2G_TAP_TH_4_G, 0, 4000f);
+    offset = clamp<float>(value / MSA300_MG2G_TAP_TH_4_G, 0, 4000f);
 
     break;
     case MSA300_RANGE_2_G:
-    offset = clamp(value / MSA300_MG2G_TAP_TH_2_G, 0, 2000f);
+    offset = clamp<float>(value / MSA300_MG2G_TAP_TH_2_G, 0, 2000f);
 
     break;
   }
@@ -754,11 +808,14 @@ void MSA300::setTapThreshold(float value)
 /**************************************************************************/
 /*!
     @brief  Set duration of tap interrupt.
+    @param  duration
+            Second shock duration: According to tapDuration_t enum.
+    @param  quiet
             Quiet duration: 0 -> 30 ms
                             1 -> 20 ms
+    @param  shock
             Shock duration: 0 -> 50 ms
                             1 -> 70 ms
-            Second shock duration: According to tapDuration_t enum.
 */
 /**************************************************************************/
 void MSA300::setTapDuration(tapDuration_t duration, uint8_t quiet, uint8_t shock)
@@ -776,6 +833,8 @@ void MSA300::setTapDuration(tapDuration_t duration, uint8_t quiet, uint8_t shock
 /*!
     @brief  Set threshold of active interrupt. Value can vary from 0 to full
             scale of each range. Values outside the range will be clamped.
+    @param  value
+            Active threshold value (0 to full scale)
 */
 /**************************************************************************/
 void MSA300::setActiveThreshold(float value)
@@ -783,19 +842,19 @@ void MSA300::setActiveThreshold(float value)
   float offset;
   switch(_range) {
     case MSA300_RANGE_16_G:
-    offset = clamp(value / MSA300_MG2G_ACTIVE_TH_16_G, 0, 16000f);
+    offset = clamp<float>(value / MSA300_MG2G_ACTIVE_TH_16_G, 0, 16000f);
     break;
 
     case MSA300_RANGE_8_G:
-    offset = clamp(value / MSA300_MG2G_ACTIVE_TH_8_G, 0, 8000f);
+    offset = clamp<float>(value / MSA300_MG2G_ACTIVE_TH_8_G, 0, 8000f);
     break;
 
     case MSA300_RANGE_4_G:
-    offset = clamp(value / MSA300_MG2G_ACTIVE_TH_4_G, 0, 4000f);
+    offset = clamp<float>(value / MSA300_MG2G_ACTIVE_TH_4_G, 0, 4000f);
     break;
 
     case MSA300_RANGE_2_G:
-    offset = clamp(value / MSA300_MG2G_ACTIVE_TH_2_G, 0, 2000f);
+    offset = clamp<float>(value / MSA300_MG2G_ACTIVE_TH_2_G, 0, 2000f);
     break;
   }
 
@@ -806,13 +865,15 @@ void MSA300::setActiveThreshold(float value)
 /*!
     @brief  Set duration of active interrupt.
             Value can vary from 1 ms to 5 ms.
+    @param  duration
+            Active interrupt duration (1 to 5 ms)
 */
 /**************************************************************************/
 void MSA300::setActiveDuration(uint8_t duration)
 {
   uint8_t reg;
-  duration = clamp(duration - 1, 0, 4);
-  reg |= duration;
+  value = clamp<uint8_t>(duration - 1, 0, 4);
+  reg |= value;
 
   writeRegister(MSA300_REG_ACTIVE_DUR, reg);
 }
@@ -821,14 +882,16 @@ void MSA300::setActiveDuration(uint8_t duration)
 /*!
     @brief  Set duration of freefall interrupt.
             Value can vary from 2 ms to 512 ms.
+    @param  duration
+            Freefall interrupt duration (2 to 512 ms)
 */
 /**************************************************************************/
 void MSA300::setFreefallDuration(uint16_t duration)
 {
   uint8_t reg;
   float dur_f;
-  duration = clamp_uint16(duration, 2, 512);
-  dur_f = clamp((float)(duration)/2.0f - 1, 0, 256); // avoid rounding the result in between 
+  duration = clamp<uint16_t>(duration, 2, 512);
+  dur_f = clamp<float>((float)(duration)/2.0f - 1, 0, 256); // avoid rounding the result in between 
   reg |= (uint8_t)dur_f;
 
   writeRegister(MSA300_REG_FREEFALL_DUR, reg);
@@ -838,6 +901,8 @@ void MSA300::setFreefallDuration(uint16_t duration)
 /*!
     @brief  Set threshold of freefall interrupt. Value can vary from 0 to full
             scale of each range. Values outside the range will be clamped.
+    @param  value
+            Freefall interrupt threshold (0 to full scale)
 */
 /**************************************************************************/
 void MSA300::setFreefallThreshold(float value)
@@ -845,19 +910,19 @@ void MSA300::setFreefallThreshold(float value)
   float threshold = value / 7.81f;
   switch(_range) {
     case MSA300_RANGE_16_G:
-    threshold = clamp(threshold, 0, 16000f);
+    threshold = clamp<float>(threshold, 0, 16000f);
     break;
 
     case MSA300_RANGE_8_G:
-    threshold = clamp(threshold, 0, 8000f);
+    threshold = clamp<float>(threshold, 0, 8000f);
     break;
 
     case MSA300_RANGE_4_G:
-    threshold = clamp(threshold, 0, 4000f);
+    threshold = clamp<float>(threshold, 0, 4000f);
     break;
 
     case MSA300_RANGE_2_G:
-    threshold = clamp(threshold, 0, 2000f);
+    threshold = clamp<float>(threshold, 0, 2000f);
     break;
   }
 
@@ -869,14 +934,17 @@ void MSA300::setFreefallThreshold(float value)
     @brief  Set hysteresis value and mode of freefall interrupt. 
             Value can vary from 0 to 500 mg in integers of 125mg.
             Values outside the range will be clamped.
+    @param  mode
             Mode: 1 -> sum mode |acc_x| + |acc_y| + |acc_z|
                   0 -> single mode
+    @param  value
+            Freefall hysteresis value (0 to 500 mg in steps of 125 mg)
 */  
 /**************************************************************************/
 void MSA300::setFreefallHysteresis(uint8_t mode, uint8_t value)
 {
   uint8_t reg;
-  uint8_t hysteresis = (uint8_t)clamp_uint16(value / 125, 0, 500);
+  uint8_t hysteresis = (uint8_t)clamp<uint16_t>(value / 125, 0, 500);
 
   reg |= (mode << 3);
   reg &= ~0x3;
@@ -888,9 +956,11 @@ void MSA300::setFreefallHysteresis(uint8_t mode, uint8_t value)
 /**************************************************************************/
 /*! 
     @brief  Swap polarity.
+    @param  polarity
+            Polarity to be changed
 */
 /**************************************************************************/
-void swapPolarity(pol_t polarity)
+void MSA300::swapPolarity(pol_t polarity)
 {
   uint8_t reg = readRegister(MSA300_REG_SWAP_POLARITY);
 
@@ -902,6 +972,8 @@ void swapPolarity(pol_t polarity)
 /**************************************************************************/
 /*! 
     @brief  Set orientation mode
+    @param  mode
+            Orientation mode
 */
 /**************************************************************************/
 void MSA300::setOrientMode(orientMode_t mode)
@@ -917,13 +989,15 @@ void MSA300::setOrientMode(orientMode_t mode)
 /**************************************************************************/
 /*! 
     @brief  Set orientation hysteresis. Value can vary from 0 to 500 mg.
+    @param  value
+            Orientation hysteresis value (0 to 500 mg)
 */
 /**************************************************************************/
 void MSA300::setOrientHysteresis(float value)
 {
   uint8_t reg = readRegister(MSA300_REG_ORIENT_HY);
 
-  uint8_t hysteresis = (uint8_t)clamp(value / 62.5f, 0, 8);
+  uint8_t hysteresis = (uint8_t)clamp<float>(value / 62.5f, 0, 8);
   
   reg &= ~0x70;
   reg |= hysteresis;
@@ -934,6 +1008,10 @@ void MSA300::setOrientHysteresis(float value)
 /**************************************************************************/
 /*! 
     @brief  Set z blocking.
+    @param  mode
+            Orientation blocking mode
+    @param  zBlockValue
+            Limit value of z-blocking
 */
 /**************************************************************************/
 void MSA300::setBlocking(orientBlockMode_t mode, float zBlockValue)
@@ -945,7 +1023,7 @@ void MSA300::setBlocking(orientBlockMode_t mode, float zBlockValue)
 
   writeRegister(MSA300_REG_ORIENT_HY, reg);
 
-  uint8_t value = (uint8_t)clamp(zBlockValue / 62.5f, 0, 15);
+  uint8_t value = (uint8_t)clamp<float>(zBlockValue / 62.5f, 0, 15);
 
   writeRegister(MSA300_REG_Z_BLOCK, value);
 }
@@ -953,6 +1031,8 @@ void MSA300::setBlocking(orientBlockMode_t mode, float zBlockValue)
 /**************************************************************************/
 /*! 
     @brief  Get the acceleration.
+    @return Acceleration struct containing accelarations of each axis in 
+            m/s^2
 */
 /**************************************************************************/
 acc_t MSA300::getAcceleration(void) 
