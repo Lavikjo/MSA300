@@ -250,8 +250,10 @@ MSA300::MSA300(uint8_t clock, uint8_t miso, uint8_t mosi, uint8_t cs, int32_t se
 /**************************************************************************/
 /*!
     @brief  Setups the HW (reads coefficients values, etc.)
-    @return True if connection was established, False if no MSA300 was
-            detected
+    @retval True 
+            Connection was established
+    @retval False 
+            No MSA300 was detected
 */
 /**************************************************************************/
 bool MSA300::begin() 
@@ -1035,13 +1037,13 @@ void MSA300::setBlocking(orientBlockMode_t mode, float zBlockValue)
             m/s^2
 */
 /**************************************************************************/
-acc_t MSA300::getAcceleration(void) 
+void MSA300::getAcceleration(acc_t acceleration) 
 {
-  acc_t acceleration;
+  //Clear contents
+  memset(acceleration, 0, sizeof(acc_t));
   
-  acceleration.x = getX() * _multiplier * GRAVITY;
-  acceleration.y = getY() * _multiplier * GRAVITY;
-  acceleration.z = getZ() * _multiplier * GRAVITY;
-  
-  return acceleration;
+  //Set contents with new values
+  acceleration->x = getX() * _multiplier * GRAVITY;
+  acceleration->y = getY() * _multiplier * GRAVITY;
+  acceleration->z = getZ() * _multiplier * GRAVITY;
 }

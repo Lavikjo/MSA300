@@ -300,7 +300,7 @@ class MSA300{
   void        enableDoubleTapInterrupt(uint8_t interrupt);
   void        enableNewDataInterrupt(uint8_t interrupt);
  
-  acc_t       getAcceleration(void);
+  void        getAcceleration(acc_t acceleration);
   orient_t    checkOrientation(void);
 
   uint8_t     getPartID(void);
