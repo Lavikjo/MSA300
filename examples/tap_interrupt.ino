@@ -2,11 +2,17 @@
 #include <Wire.h>
 
 int counter = 0;
+const byte interrupt_pin = 2;
+volatile interrupt_t interrupts;
 
 void setup() {
 
     Serial.begin(9600);
     Serial.println("MSA300 test");
+
+    //Setup interrupt
+    pinMode(interrupt_pin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(interrupt_pin), tap, RISING);
 
     // Initialize MSA300 with ID using i2c
     MSA300 accel = MSA300(1234);
@@ -39,9 +45,7 @@ void setup() {
 
 void loop() {
 
-    //Check if tap interrupt has occured
-    interrupt_t interrupts;
-    interrupts = accel.checkInterrupts();
+    
 
     if(interrupts.sTapInt) {
 
@@ -65,8 +69,10 @@ void loop() {
         //Reset interrupts
         accel.resetInterrupt();
     }
+ 
+}
 
-    delay(100);
-
-    
+void tap() {
+    //Check if tap interrupt has occured
+    interrupts = accel.checkInterrupts();
 }
