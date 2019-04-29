@@ -2,13 +2,15 @@
 #include <Wire.h>
 
 
+// Initialize MSA300 with ID using i2c
+MSA300 accel = MSA300(1234);
+
 void setup() {
 
     Serial.begin(9600);
     Serial.println("MSA300 test");
 
-    // Initialize MSA300 with ID using i2c
-    MSA300 accel = MSA300(1234);
+
 
     // Establish connection to sensor
     if(!accel.begin()) {

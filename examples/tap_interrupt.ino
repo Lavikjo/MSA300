@@ -5,6 +5,9 @@ int counter = 0;
 const byte interrupt_pin = 2;
 volatile interrupt_t interrupts;
 
+// Initialize MSA300 with ID using i2c
+MSA300 accel = MSA300(1234);
+
 void setup() {
 
     Serial.begin(9600);
@@ -14,8 +17,7 @@ void setup() {
     pinMode(interrupt_pin, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(interrupt_pin), tap, RISING);
 
-    // Initialize MSA300 with ID using i2c
-    MSA300 accel = MSA300(1234);
+
 
     // Establish connection to sensor
     if(!accel.begin()) {
