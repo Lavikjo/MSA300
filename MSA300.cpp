@@ -1033,8 +1033,8 @@ void MSA300::setBlocking(orientBlockMode_t mode, float zBlockValue)
 /**************************************************************************/
 /*! 
     @brief  Get the acceleration.
-    @return Acceleration struct containing accelarations of each axis in 
-            m/s^2
+    @param  acc_t
+            Acceleration struct to be filled with data
 */
 /**************************************************************************/
 void MSA300::getAcceleration(acc_t acceleration) 
