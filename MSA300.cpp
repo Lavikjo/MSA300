@@ -8,7 +8,7 @@
     Joel Lavikainen
     
     @section license License 
-    BSD
+    BSD-3
     
     @section intro_sec Introduction 
     Based on Adafruit Accelerometer library code

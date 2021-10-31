@@ -1,9 +1,19 @@
 /**************************************************************************/
 /*!
     @file     MSA300.h
+    
+    @mainpage MSA300 14-bit digital accelometer library
+
+    @section author Author   
+    Joel Lavikainen
+    
+    @section license License 
+    BSD-3
+    
+    @section intro_sec Introduction 
+    Based on Adafruit Accelerometer library code
 */
 /**************************************************************************/
-
 
 
 #if ARDUINO >= 100
