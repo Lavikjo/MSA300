@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['setactiveduration_0',['setActiveDuration',['../class_m_s_a300.html#abb7aa2558b645d4de46903174b4f1db6',1,'MSA300']]],
+  ['setactivethreshold_1',['setActiveThreshold',['../class_m_s_a300.html#a5d656754a5fd78d9a70721dd725d7a6d',1,'MSA300']]],
+  ['setblocking_2',['setBlocking',['../class_m_s_a300.html#acee19e1c854ca45dbeb74ad82d7eec94',1,'MSA300']]],
+  ['setdatarate_3',['setDataRate',['../class_m_s_a300.html#afa9b7d0ffec56c11bb4e5bc72112a0a2',1,'MSA300']]],
+  ['setfreefallduration_4',['setFreefallDuration',['../class_m_s_a300.html#a6484984162e3e29feb30843bba18e61b',1,'MSA300']]],
+  ['setfreefallhysteresis_5',['setFreefallHysteresis',['../class_m_s_a300.html#a6d6b69d5714ef3b5ad9d69b61eaeaf1a',1,'MSA300']]],
+  ['setfreefallthreshold_6',['setFreefallThreshold',['../class_m_s_a300.html#a586699c6289ad4718f90fcb3fcfecf8f',1,'MSA300']]],
+  ['setinterruptlatch_7',['setInterruptLatch',['../class_m_s_a300.html#a25827dfc9312b4cdbe59304e0e931e35',1,'MSA300']]],
+  ['setmode_8',['setMode',['../class_m_s_a300.html#a3fc1afdcd04127586aa265066211abdc',1,'MSA300']]],
+  ['setoffset_9',['setOffset',['../class_m_s_a300.html#a27b40122241fccbcb944e92b5258f77b',1,'MSA300']]],
+  ['setorienthysteresis_10',['setOrientHysteresis',['../class_m_s_a300.html#a78e7d1938b7308bb3e56a9eeaa3e7d56',1,'MSA300']]],
+  ['setorientmode_11',['setOrientMode',['../class_m_s_a300.html#a247284d7e89446bb6842d293e21ef401',1,'MSA300']]],
+  ['setrange_12',['setRange',['../class_m_s_a300.html#a364cbb589dd451aa0efdec4f183c90cb',1,'MSA300']]],
+  ['setresolution_13',['setResolution',['../class_m_s_a300.html#a4ab365d4b1d4cb13a8984429ebfc8bac',1,'MSA300']]],
+  ['settapduration_14',['setTapDuration',['../class_m_s_a300.html#addacbc1c109389a370990ec647099b5e',1,'MSA300']]],
+  ['settapthreshold_15',['setTapThreshold',['../class_m_s_a300.html#a1aed8688647a9b2d4292717175b24ef6',1,'MSA300']]],
+  ['swappolarity_16',['swapPolarity',['../class_m_s_a300.html#a75b252ae0d95d4193844a802f9c945fc',1,'MSA300']]]
+];
