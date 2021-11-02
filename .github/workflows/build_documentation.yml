@@ -12,9 +12,11 @@ jobs:
   
     steps:
     - name: Check out code
-        uses: actions/checkout@v2
+      uses: actions/checkout@v2
+
     - name: Build Doxygen documentation
-        uses: mattnotmitt/doxygen-action@v1
+      uses: mattnotmitt/doxygen-action@v1
+
     - name: Deploy to GH pages
       uses: peaceiris/actions-gh-pages@v3
       with:
